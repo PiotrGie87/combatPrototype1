@@ -1034,7 +1034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbda7c94703faa04ca956362fdd5bbdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countingTime: 40
+  countingTime: 10
   points:
   - {fileID: 1116900874}
   - {fileID: 101735948}

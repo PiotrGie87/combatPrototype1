@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 
 public class ButtonControler : MonoBehaviour
@@ -16,6 +17,10 @@ public class ButtonControler : MonoBehaviour
     float focus = 0;
 
     private List<int> randomPoints = new List<int>();
+    private List<int> selectedPoints = new List<int>();
+
+    private bool isStart;
+
 
 
 
@@ -49,6 +54,7 @@ public class ButtonControler : MonoBehaviour
         }
 
         focus = 100;
+        isStart = true;
     }
 
     
@@ -57,16 +63,37 @@ public class ButtonControler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
 
-        
+        if(randomPoints.Count == selectedPoints.Count)
+        {
+            focus = 0;
+        }
+
 
         if (focus > 0)
         {
             OnClick();
             focus -= Time.deltaTime * countingTime;
-            Debug.Log(focus);
+            //Debug.Log(focus);
+
+        }
+        else if (isStart)
+        {
+            randomPoints.ForEach(i => Debug.Log(i));
             
+            selectedPoints.ForEach(i => Debug.Log(i));
+            
+
+            if (randomPoints.SequenceEqual(selectedPoints))
+            {
+                Debug.Log("Wygra³eœ");
+            }
+            else
+            {
+                Debug.Log("Przegra³eœ");
+            }
+
+            isStart = false;
         }
 
     }
@@ -80,18 +107,20 @@ public class ButtonControler : MonoBehaviour
 
             if (hit.collider != null && hit.collider.transform == head.gameObject.transform)
             {
-                //points[0]
+                selectedPoints.Add(0);
 
          
-                Debug.Log("yyy");
+                Debug.Log("000");
             }
             if(hit.collider != null && hit.collider.transform == torso.gameObject.transform)
             {
-                Debug.Log("xxx");
+                selectedPoints.Add(2);
+                Debug.Log("222");
             }
             if(hit.collider != null && hit.collider.transform == legs.gameObject.transform)
             {
-                Debug.Log("zzz");
+                selectedPoints.Add(4);
+                Debug.Log("444");
             }
         }
         else if (Input.GetMouseButtonDown(1))
@@ -101,15 +130,18 @@ public class ButtonControler : MonoBehaviour
 
             if (hit.collider != null && hit.collider.transform == head.gameObject.transform)
             {
-                Debug.Log("aaa");
+                selectedPoints.Add(1);
+                Debug.Log("111");
             }
             if (hit.collider != null && hit.collider.transform == torso.gameObject.transform)
             {
-                Debug.Log("bbb");
+                selectedPoints.Add(3);
+                Debug.Log("333");
             }
             if (hit.collider != null && hit.collider.transform == legs.gameObject.transform)
             {
-                Debug.Log("ccc");
+                selectedPoints.Add(5);
+                Debug.Log("555");
             }
 
 
