@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-
-public class ButtonControler : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float countingTime = 1;
+    public GameObject combat;
+    private CombatController combatController;
 
-    public List <GameObject> points;
+    [SerializeField]
+    float countingTime = 10;
+
+    public List<GameObject> points;
 
     public GameObject head;
     public GameObject torso;
@@ -21,24 +24,21 @@ public class ButtonControler : MonoBehaviour
 
     private bool isStart;
 
-
-
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        combatController = combat.GetComponent<CombatController>();
+    }
 
+    public void StartDefense()
+    {
+        randomPoints = new List<int>();
+        selectedPoints = new List<int>();
         for (int i = 0; i < 3; i++)
         {
             randomPoints.Add(Random.Range(0, 6));
-
         }
 
-
         StartCoroutine(ShowRandomPoints());
-        
     }
 
     private IEnumerator ShowRandomPoints()
@@ -50,52 +50,44 @@ public class ButtonControler : MonoBehaviour
             Debug.Log(value);
             yield return new WaitForSeconds(1f);
             points[value].GetComponent<SpriteRenderer>().color = Color.green; // trudniejsza wersja :)
-
         }
 
         focus = 100;
         isStart = true;
     }
 
-    
-    
-
     // Update is called once per frame
     void Update()
     {
-
-        if(randomPoints.Count == selectedPoints.Count)
+        if (isStart && randomPoints.Count == selectedPoints.Count)
         {
             focus = 0;
         }
-
 
         if (focus > 0)
         {
             OnClick();
             focus -= Time.deltaTime * countingTime;
             //Debug.Log(focus);
-
         }
         else if (isStart)
         {
             randomPoints.ForEach(i => Debug.Log(i));
-            
+
             selectedPoints.ForEach(i => Debug.Log(i));
-            
 
             if (randomPoints.SequenceEqual(selectedPoints))
             {
-                Debug.Log("Wygra≥eú");
+                Debug.Log("Wygra≈Çe≈õ");
             }
             else
             {
-                Debug.Log("Przegra≥eú");
+                Debug.Log("Przegra≈Çe≈õ");
             }
 
             isStart = false;
+            combatController.Next();
         }
-
     }
 
     private void OnClick()
@@ -109,15 +101,14 @@ public class ButtonControler : MonoBehaviour
             {
                 selectedPoints.Add(0);
 
-         
                 Debug.Log("000");
             }
-            if(hit.collider != null && hit.collider.transform == torso.gameObject.transform)
+            if (hit.collider != null && hit.collider.transform == torso.gameObject.transform)
             {
                 selectedPoints.Add(2);
                 Debug.Log("222");
             }
-            if(hit.collider != null && hit.collider.transform == legs.gameObject.transform)
+            if (hit.collider != null && hit.collider.transform == legs.gameObject.transform)
             {
                 selectedPoints.Add(4);
                 Debug.Log("444");
@@ -143,10 +134,6 @@ public class ButtonControler : MonoBehaviour
                 selectedPoints.Add(5);
                 Debug.Log("555");
             }
-
-
-
-
         }
     }
 }
