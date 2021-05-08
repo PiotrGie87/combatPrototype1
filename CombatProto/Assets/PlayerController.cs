@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     public GameObject combat;
     private CombatController combatController;
 
+    public float pointShowSpeed = 1f;
+    
     [SerializeField]
     float countingTime = 10;
 
@@ -17,7 +19,7 @@ public class PlayerController : MonoBehaviour
     public GameObject torso;
     public GameObject legs;
 
-    float focus = 0;
+    public float focus = 0;
 
     private List<int> randomPoints = new List<int>();
     private List<int> selectedPoints = new List<int>();
@@ -31,8 +33,6 @@ public class PlayerController : MonoBehaviour
 
     public void StartDefense()
     {
-        randomPoints = new List<int>();
-        selectedPoints = new List<int>();
         for (int i = 0; i < 3; i++)
         {
             randomPoints.Add(Random.Range(0, 6));
@@ -47,8 +47,7 @@ public class PlayerController : MonoBehaviour
         {
             int value = randomPoints[i];
             points[value].GetComponent<SpriteRenderer>().color = Color.red;
-            Debug.Log(value);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(pointShowSpeed);
             points[value].GetComponent<SpriteRenderer>().color = Color.green; // trudniejsza wersja :)
         }
 
@@ -68,14 +67,11 @@ public class PlayerController : MonoBehaviour
         {
             OnClick();
             focus -= Time.deltaTime * countingTime;
-            //Debug.Log(focus);
         }
         else if (isStart)
         {
             randomPoints.ForEach(i => Debug.Log(i));
-
             selectedPoints.ForEach(i => Debug.Log(i));
-
             if (randomPoints.SequenceEqual(selectedPoints))
             {
                 Debug.Log("Wygrałeś");
@@ -85,6 +81,11 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Przegrałeś");
             }
 
+            randomPoints.ForEach(i => points[i].GetComponent<SpriteRenderer>().color = Color.blue);
+            selectedPoints.ForEach(i => points[i].GetComponent<SpriteRenderer>().color = Color.blue);
+            
+            randomPoints = new List<int>();
+            selectedPoints = new List<int>();
             isStart = false;
             combatController.Next();
         }
@@ -92,6 +93,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnClick()
     {
+        bool isAdd = false;
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -100,17 +102,19 @@ public class PlayerController : MonoBehaviour
             if (hit.collider != null && hit.collider.transform == head.gameObject.transform)
             {
                 selectedPoints.Add(0);
-
+                isAdd = true;
                 Debug.Log("000");
             }
             if (hit.collider != null && hit.collider.transform == torso.gameObject.transform)
             {
                 selectedPoints.Add(2);
+                isAdd = true;
                 Debug.Log("222");
             }
             if (hit.collider != null && hit.collider.transform == legs.gameObject.transform)
             {
                 selectedPoints.Add(4);
+                isAdd = true;
                 Debug.Log("444");
             }
         }
@@ -122,17 +126,36 @@ public class PlayerController : MonoBehaviour
             if (hit.collider != null && hit.collider.transform == head.gameObject.transform)
             {
                 selectedPoints.Add(1);
+                isAdd = true;
                 Debug.Log("111");
             }
             if (hit.collider != null && hit.collider.transform == torso.gameObject.transform)
             {
                 selectedPoints.Add(3);
+                isAdd = true;
                 Debug.Log("333");
             }
             if (hit.collider != null && hit.collider.transform == legs.gameObject.transform)
             {
                 selectedPoints.Add(5);
+                isAdd = true;
                 Debug.Log("555");
+            }
+        }
+        if (isAdd)
+        {
+            float step = 100 / 3;
+            if (focus > step * 2)
+            {
+                focus = step * 2;
+            }
+            else if (focus > step)
+            {
+                focus = step;
+            }
+            else
+            {
+                focus = 0;
             }
         }
     }
