@@ -54,7 +54,5 @@ public class CombatController : MonoBehaviour
             isPlayerAction = true;
             playerController.StartDefense();
         }
-        Debug.Log("isPlayerAction");
-        Debug.Log(isPlayerAction);
     }
 }

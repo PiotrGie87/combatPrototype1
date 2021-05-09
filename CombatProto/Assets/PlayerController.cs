@@ -37,7 +37,6 @@ public class PlayerController : MonoBehaviour
         {
             randomPoints.Add(Random.Range(0, 6));
         }
-
         StartCoroutine(ShowRandomPoints());
     }
 
@@ -70,15 +69,16 @@ public class PlayerController : MonoBehaviour
         }
         else if (isStart)
         {
+            Debug.Log("Wylosowana kolejność:");
             randomPoints.ForEach(i => Debug.Log(i));
             selectedPoints.ForEach(i => Debug.Log(i));
             if (randomPoints.SequenceEqual(selectedPoints))
             {
-                Debug.Log("Wygrałeś");
+                Debug.LogWarning("Obroniłeś się");
             }
             else
             {
-                Debug.Log("Przegrałeś");
+                Debug.LogWarning("Zostałeś trafiony");
             }
 
             randomPoints.ForEach(i => points[i].GetComponent<SpriteRenderer>().color = Color.blue);
@@ -103,19 +103,19 @@ public class PlayerController : MonoBehaviour
             {
                 selectedPoints.Add(0);
                 isAdd = true;
-                Debug.Log("000");
+                Debug.Log("Lewa głowa [0]");
             }
             if (hit.collider != null && hit.collider.transform == torso.gameObject.transform)
             {
                 selectedPoints.Add(2);
                 isAdd = true;
-                Debug.Log("222");
+                Debug.Log("Lewy tors [2]");
             }
             if (hit.collider != null && hit.collider.transform == legs.gameObject.transform)
             {
                 selectedPoints.Add(4);
                 isAdd = true;
-                Debug.Log("444");
+                Debug.Log("Lewa noga [4]");
             }
         }
         else if (Input.GetMouseButtonDown(1))
@@ -127,19 +127,19 @@ public class PlayerController : MonoBehaviour
             {
                 selectedPoints.Add(1);
                 isAdd = true;
-                Debug.Log("111");
+                Debug.Log("Prawa głowa [1]");
             }
             if (hit.collider != null && hit.collider.transform == torso.gameObject.transform)
             {
                 selectedPoints.Add(3);
                 isAdd = true;
-                Debug.Log("333");
+                Debug.Log("Prawy tors [3]");
             }
             if (hit.collider != null && hit.collider.transform == legs.gameObject.transform)
             {
                 selectedPoints.Add(5);
                 isAdd = true;
-                Debug.Log("555");
+                Debug.Log("Prawa noga [5]");
             }
         }
         if (isAdd)
