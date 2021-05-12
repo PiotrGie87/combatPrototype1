@@ -87,7 +87,6 @@ public class PlayerController : MonoBehaviour
             randomPoints = new List<int>();
             selectedPoints = new List<int>();
             isStart = false;
-            combatController.Next();
         }
     }
 

@@ -58,7 +58,6 @@ public class EnemyController : MonoBehaviour
                 {
                     pointsObject.ForEach(o => Destroy(o));
                     selectedPoints = new List<int>();
-                    combatController.Next();
                 }
                 isStart = false;
             }
@@ -75,7 +74,6 @@ public class EnemyController : MonoBehaviour
             {
                 selectedPoints.ForEach(i => Destroy(pointsObject[i]));
                 selectedPoints = new List<int>();
-                combatController.Next();
                 isFinisher = false;
             }
         }
